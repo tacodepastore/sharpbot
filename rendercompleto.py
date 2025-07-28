@@ -1,7 +1,9 @@
 from PIL import Image, ImageDraw, ImageFont
 from datetime import date
 import os
-
+if not os.path.exists(ANALYSIS_PATH):
+    print(f"⛔ Archivo no encontrado: {ANALYSIS_PATH}")
+    exit(1)
 # Configuración general
 WIDTH, HEIGHT = 1200, 1800
 BACKGROUND_COLOR = (255, 255, 255)
