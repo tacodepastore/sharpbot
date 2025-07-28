@@ -17,7 +17,7 @@ scripts = [
 
 for script in scripts:
     print(f"\n▶️ Ejecutando: {script}")
-    subprocess.run([fusion_pitchers_vs_roster_savant.py], check=True)
+    subprocess.run([PYTHON_ENV, "fusion_pitchers_vs_roster_savant.py"], check=True)
 
 print("\n✅ Pipeline completo.")
 
