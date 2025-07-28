@@ -132,6 +132,9 @@ for idx, group in enumerate(groups):
     img.save(output_file)
     image_files.append(output_file)
     print(f"✅ Imagen generada: {output_file}")
+    if not blocks:
+    print("⛔ No hay bloques para renderizar. Verifica el archivo de entrada.")
+    exit(1)
 
 # Exportar a PDF
 images = [Image.open(img).convert("RGB") for img in image_files]
