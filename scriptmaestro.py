@@ -2,7 +2,7 @@ import subprocess
 import datetime
 
 # Ruta explícita al ejecutable del entorno virtual
-PYTHON_ENV = r"C:\Users\F505D\Desktop\mis-bots-sharp\mlb_env\Scripts\python.exe"
+PYTHON_ENV = "python"
 
 # Fecha dinámica para sincronizar nombres
 today = datetime.date.today().strftime("%Y-%m-%d")
