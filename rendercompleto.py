@@ -1,9 +1,16 @@
 from PIL import Image, ImageDraw, ImageFont
 from datetime import date
 import os
+
+# Fecha y rutas dinámicas
+today = date.today()
+OUTPUT_PREFIX = f"sharpcard_pitching_forma_{today}"
+ANALYSIS_PATH = f"matchups_completos_con_forma_{today}.txt"
+
 if not os.path.exists(ANALYSIS_PATH):
     print(f"⛔ Archivo no encontrado: {ANALYSIS_PATH}")
     exit(1)
+
 # Configuración general
 WIDTH, HEIGHT = 1200, 1800
 BACKGROUND_COLOR = (255, 255, 255)
@@ -12,11 +19,6 @@ FONT_PATH_DEFAULT = "arial.ttf"
 FONT_PATH_EMOJI = "seguiemj.ttf"
 LOGO_PATH = "taco_logo.png"
 MATCHUPS_PER_IMAGE = 3
-
-# Fecha y rutas dinámicas
-today = date.today()
-OUTPUT_PREFIX = f"sharpcard_pitching_forma_{today}"
-ANALYSIS_PATH = f"matchups_completos_con_forma_{today}.txt"
 
 # Cargar fuente con fallback
 def load_font(size):
@@ -78,15 +80,12 @@ for idx, group in enumerate(groups):
                 y += 10
                 continue
 
-            # Eliminar líneas de separadores
             if set(line) <= {"=", "-"}:
                 continue
 
-            # No repetir diagnóstico redundante
             if "📌 Diagnóstico: Edge técnico dominante" in line:
                 continue
 
-            # Colorear inline 🟢🟡🔴
             if "🟢" in line or "🟡" in line or "🔴" in line:
                 color_map = {"🟢": "green", "🟡": "yellow", "🔴": "red"}
                 parts = line.split(" ")
@@ -102,7 +101,6 @@ for idx, group in enumerate(groups):
                 y += 40
                 continue
 
-            # Semáforo por descripción textual
             if "Edge técnico claro" in line:
                 draw.ellipse((60, y + 6, 80, y + 26), fill="green", outline="black")
                 draw.text((90, y), line, font=font_body, fill=TEXT_COLOR)
@@ -126,16 +124,16 @@ for idx, group in enumerate(groups):
         y += 25
         draw.line([(60, y), (WIDTH - 60, y)], fill="gray", width=2)
         y += 30
-if not blocks:
-    print("⛔ No hay bloques para renderizar. Verifica el archivo de entrada.")
-    exit(1)
 
-    # Guardar imagen parcial
+    # ✅ Guardar imagen por grupo
     output_file = f"{OUTPUT_PREFIX}_part{idx + 1}.png"
     img.save(output_file)
     image_files.append(output_file)
     print(f"✅ Imagen generada: {output_file}")
-   
+
+if not blocks:
+    print("⛔ No hay bloques para renderizar. Verifica el archivo de entrada.")
+    exit(1)
 
 # Exportar a PDF
 images = [Image.open(img).convert("RGB") for img in image_files]
@@ -148,9 +146,7 @@ for img_path in image_files:
     os.remove(img_path)
 print("🧹 PNGs eliminadas.")
 
-import os
-
-pdf_output_path = f"{OUTPUT_PREFIX}.pdf"
+# Confirmación
 if not os.path.exists(pdf_output_path):
     print(f"⛔ No se generó el archivo PDF esperado: {pdf_output_path}")
     exit(1)
