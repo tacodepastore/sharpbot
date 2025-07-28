@@ -126,15 +126,16 @@ for idx, group in enumerate(groups):
         y += 25
         draw.line([(60, y), (WIDTH - 60, y)], fill="gray", width=2)
         y += 30
+if not blocks:
+    print("⛔ No hay bloques para renderizar. Verifica el archivo de entrada.")
+    exit(1)
 
     # Guardar imagen parcial
     output_file = f"{OUTPUT_PREFIX}_part{idx + 1}.png"
     img.save(output_file)
     image_files.append(output_file)
     print(f"✅ Imagen generada: {output_file}")
-    if not blocks:
-    print("⛔ No hay bloques para renderizar. Verifica el archivo de entrada.")
-    exit(1)
+   
 
 # Exportar a PDF
 images = [Image.open(img).convert("RGB") for img in image_files]
@@ -146,3 +147,12 @@ print(f"📄 PDF generado: {pdf_output_path}")
 for img_path in image_files:
     os.remove(img_path)
 print("🧹 PNGs eliminadas.")
+
+import os
+
+pdf_output_path = f"{OUTPUT_PREFIX}.pdf"
+if not os.path.exists(pdf_output_path):
+    print(f"⛔ No se generó el archivo PDF esperado: {pdf_output_path}")
+    exit(1)
+else:
+    print(f"✅ Archivo PDF generado exitosamente: {pdf_output_path}")
